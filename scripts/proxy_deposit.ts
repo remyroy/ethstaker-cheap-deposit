@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 
 async function main() {
   const [faucetAccount, otherAccount] = await ethers.getSigners();
-  const goerliProxyDepositContract = "0xAd24129F8ce006fb7cA08132149948AD56760A58";
+  const goerliProxyDepositContract = "0xC72FD00185D326F30606140b6f6E5A8b12e1CAf0";
 
   console.log(`Proxy deposit from ${otherAccount.address} using proxy on ${goerliProxyDepositContract}`);
 

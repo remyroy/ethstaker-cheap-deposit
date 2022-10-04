@@ -169,7 +169,7 @@ contract DepositProxyContract is IDepositContract, ERC1155, Ownable, ERC1155Supp
 
     uint256 public constant CHEAP_DEPOSIT = 0;
     uint256 public constant MIN_DEPOSIT_VALUE = 0.0001 ether;
-    uint256 public constant MAX_GAS_FEE = 0.01 ether;
+    uint256 public constant MAX_GAS_FEE = 0.00005 ether;
     uint256 public constant DEPOSIT_COST = 32 ether;
 
     DepositContract private _dc;

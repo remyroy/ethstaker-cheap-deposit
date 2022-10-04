@@ -46,7 +46,13 @@ describe("deposit_proxy", function () {
       value: ethers.utils.parseUnits('320', 'ether')
     });
 
-    return { depositContract, depositProxyContract, owner, otherAccount, thirdAccount };
+    // Unfunded depositProxyContract
+    const unfundedDepositProxyContract = await DepositProxyContract.deploy(depositContract.address);
+
+    // Transfer 2 cheap deposit to other account on unfunded depositProxyContract
+    await unfundedDepositProxyContract.safeTransferFrom(owner.address, otherAccount.address, 0, 2, Buffer.from(''));
+
+    return { depositContract, depositProxyContract, unfundedDepositProxyContract, owner, otherAccount, thirdAccount };
   }
 
   describe("Deployment", function () {
@@ -84,6 +90,18 @@ describe("deposit_proxy", function () {
       const { depositProxyContract } = await loadFixture(deployDepositContractAndProxy);
 
       expect(await depositProxyContract.provider.getBalance(depositProxyContract.address)).to.equal(ethers.utils.parseUnits('320', 'ether'));
+    });
+
+    it("Should have a balance of 2 for otherAccount on unfunded deposit contract", async function () {
+      const { unfundedDepositProxyContract, otherAccount } = await loadFixture(deployDepositContractAndProxy);
+
+      expect(2).to.equal(await unfundedDepositProxyContract.balanceOf(otherAccount.address, 0));
+    });
+
+    it("Should have 0 ether on unfunded proxy contract", async function () {
+      const { unfundedDepositProxyContract } = await loadFixture(deployDepositContractAndProxy);
+
+      expect(await unfundedDepositProxyContract.provider.getBalance(unfundedDepositProxyContract.address)).to.equal(ethers.utils.parseUnits('0', 'ether'));
     });
   });
 
@@ -136,6 +154,22 @@ describe("deposit_proxy", function () {
           value: ethers.utils.parseUnits('0.00001', 'ether'),
         }
       )).to.be.revertedWith('DepositContract: deposit value too low');
+    });
+  });
+
+  describe("Proxy deposit on unfunded contract", function () {
+    it("Should fail to do a proxy deposit", async function () {
+      const {unfundedDepositProxyContract, otherAccount} = await loadFixture(deployDepositContractAndProxy);
+
+      expect(unfundedDepositProxyContract.connect(otherAccount).deposit(
+        Buffer.from('86c0ba545547456ca70c6a61f0ef946c7d7a7f6f493145338c5976ef8df2719e495c8b227263137d615fdbd9f2d61691', 'hex'),
+        Buffer.from('00b252b43f4c0c61dcec6a910a6fe0bf2adfdef834db00dc45aef0f1cac92156', 'hex'),
+        Buffer.from('a82e071ee0f8bd8d68c9aa29c1e364326ae2e4849585f56d2808389080d49c0b45029e580ad7b16fef165395ccfdcd670bae0a87dd245e50b98702ad10a95e89b8df03c049eb5ff7746cb7db80a12c653646610a4d1a0c4ad47215571548c1d7', 'hex'),
+        Buffer.from('500c1918efbd100616b38c652020741482c9f4bf4caed9e3caf9bf9b26bae8fc', 'hex'),
+        {
+          value: ethers.utils.parseUnits('0.0001', 'ether'),
+        }
+      )).to.be.revertedWith('DepositContract: not enough ETH left');
     });
   });
 

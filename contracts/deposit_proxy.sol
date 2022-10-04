@@ -169,6 +169,8 @@ contract DepositProxyContract is IDepositContract, ERC1155, Ownable, ERC1155Supp
 
     uint256 public constant CHEAP_DEPOSIT = 0;
     uint256 public constant MIN_DEPOSIT_VALUE = 0.0001 ether;
+    uint256 public constant MAX_GAS_FEE = 0.01 ether;
+    uint256 public constant DEPOSIT_COST = 32 ether;
 
     DepositContract private _dc;
     bool private _deposit_burn = false;
@@ -225,6 +227,9 @@ contract DepositProxyContract is IDepositContract, ERC1155, Ownable, ERC1155Supp
         bytes calldata signature,
         bytes32 deposit_data_root
     ) override external payable {
+        // Check if contract has enough ETH
+        require(address(this).balance >= (DEPOSIT_COST + MAX_GAS_FEE), "DepositContract: not enough ETH left");
+
         // Check deposit amount
         require(msg.value >= MIN_DEPOSIT_VALUE, "DepositContract: deposit value too low");
 
@@ -236,7 +241,7 @@ contract DepositProxyContract is IDepositContract, ERC1155, Ownable, ERC1155Supp
 
         address payable callTarget = payable(address(depositContract()));
         
-        (bool success, ) = callTarget.call{value: 32 ether, gas: 90000}(
+        (bool success, ) = callTarget.call{value: DEPOSIT_COST, gas: 90000}(
             abi.encodeWithSignature("deposit(bytes,bytes,bytes,bytes32)",
             pubkey, withdrawal_credentials, signature, deposit_data_root));
         

@@ -158,7 +158,7 @@ describe("deposit_proxy", function () {
   });
 
   describe("Proxy deposit on unfunded contract", function () {
-    it("Should fail to do a proxy deposit", async function () {
+    it("Should fail to do a proxy deposit on unfunded contract", async function () {
       const {unfundedDepositProxyContract, otherAccount} = await loadFixture(deployDepositContractAndProxy);
 
       expect(unfundedDepositProxyContract.connect(otherAccount).deposit(

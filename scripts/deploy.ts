@@ -9,7 +9,8 @@ async function main() {
   const DepositProxyContract = await ethers.getContractFactory("DepositProxyContract");
   const depositProxyContract = await DepositProxyContract.deploy(goerliDepositContract);
 
-  console.log(`DepositProxyContract deployed to ${depositProxyContract.address}`);
+  console.log(`DepositProxyContract deployed to ${depositProxyContract.address} ` +
+    `with transaction ${depositProxyContract.deployTransaction.hash}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

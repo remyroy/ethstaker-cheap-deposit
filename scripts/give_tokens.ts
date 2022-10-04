@@ -1,8 +1,13 @@
+import dotenv from "dotenv"
+dotenv.config();
+
 import { ethers } from "hardhat";
+
+const { PROXY_CONTRACT } = process.env;
 
 async function main() {
   const [faucetAccount, otherAccount] = await ethers.getSigners();
-  const goerliProxyDepositContract = "0xF1F6a5c2c86F57909Cbe6064FBC8a6BB56B03143";
+  const goerliProxyDepositContract = PROXY_CONTRACT as string;
   const tokenAmount = 4;
 
   console.log(`Sending tokens from ${faucetAccount.address} using proxy on ${goerliProxyDepositContract}`);

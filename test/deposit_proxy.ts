@@ -43,7 +43,7 @@ describe("deposit_proxy", function () {
     // Send 320 ethers to depositProxyContract
     await owner.sendTransaction({
       to: depositProxyContract.address,
-      value: ethers.utils.parseUnits('320', 'ether')
+      value: ethers.utils.parseUnits('320.01', 'ether')
     });
 
     // Unfunded depositProxyContract
@@ -86,10 +86,10 @@ describe("deposit_proxy", function () {
       expect(2).to.equal(await depositProxyContract.balanceOf(otherAccount.address, 0));
     });
 
-    it("Should have 320 ethers on proxy contract", async function () {
+    it("Should have 320.01 ethers on proxy contract", async function () {
       const { depositProxyContract } = await loadFixture(deployDepositContractAndProxy);
 
-      expect(await depositProxyContract.provider.getBalance(depositProxyContract.address)).to.equal(ethers.utils.parseUnits('320', 'ether'));
+      expect(await depositProxyContract.provider.getBalance(depositProxyContract.address)).to.equal(ethers.utils.parseUnits('320.01', 'ether'));
     });
 
     it("Should have a balance of 2 for otherAccount on unfunded deposit contract", async function () {

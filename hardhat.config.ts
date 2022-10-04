@@ -11,7 +11,7 @@ const config: HardhatUserConfig = {
     hardhat: {},
     goerli: {
       url: API_URL,
-      accounts: [PRIVATE_KEY as string]
+      accounts: [`0x${PRIVATE_KEY}`]
     }
   },
 };

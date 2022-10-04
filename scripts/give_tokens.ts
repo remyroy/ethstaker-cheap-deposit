@@ -2,7 +2,6 @@ import { ethers } from "hardhat";
 
 async function main() {
   const [faucetAccount] = await ethers.getSigners();
-  const goerliDepositContract = "0xff50ed3d0ec03aC01D4C79aAd74928BFF48a7b2b";
   const goerliProxyDepositContract = "0xAd24129F8ce006fb7cA08132149948AD56760A58";
   const tokenRecipient = "0xbefa3427a18216deC3EFE1f41E7d1B30F2a51E10";
 

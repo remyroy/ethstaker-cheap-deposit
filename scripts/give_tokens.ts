@@ -8,6 +8,7 @@ const { PROXY_CONTRACT } = process.env;
 async function main() {
   const [faucetAccount, otherAccount] = await ethers.getSigners();
   const goerliProxyDepositContract = PROXY_CONTRACT as string;
+  const otherAddress = otherAccount.address;
   const tokenAmount = 4;
 
   console.log(`Sending tokens from ${faucetAccount.address} using proxy on ${goerliProxyDepositContract}`);
@@ -16,9 +17,9 @@ async function main() {
   const depositProxyContract = await DepositProxyContract.attach(goerliProxyDepositContract);
 
   const transferTransaction = await depositProxyContract.safeTransferFrom(
-    faucetAccount.address, otherAccount.address, 0, tokenAmount, Buffer.from(''));
+    faucetAccount.address, otherAddress, 0, tokenAmount, Buffer.from(''));
   
-  console.log(`${tokenAmount} tokens sent to ${otherAccount.address} with transaction ${transferTransaction.hash}`);
+  console.log(`${tokenAmount} tokens sent to ${otherAddress} with transaction ${transferTransaction.hash}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

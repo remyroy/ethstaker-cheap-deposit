@@ -211,6 +211,13 @@ contract DepositProxyContract is IDepositContract, ERC1155, Ownable, ERC1155Supp
         // To receive ETH
     }
 
+    function withdraw(address payable to, uint256 amount)
+        public
+        onlyOwner
+    {
+        to.transfer(amount);
+    }
+
     function get_deposit_root() override external view returns (bytes32) {
         // Proxy to the real contract
         return _dc.get_deposit_root();

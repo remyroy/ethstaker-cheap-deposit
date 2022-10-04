@@ -92,6 +92,25 @@ describe("deposit_proxy", function () {
       expect(await depositProxyContract.provider.getBalance(depositProxyContract.address)).to.equal(ethers.utils.parseUnits('320.01', 'ether'));
     });
 
+    it("Should have 315.01 ethers on proxy contract after withdraw", async function () {
+      const { depositProxyContract, owner } = await loadFixture(deployDepositContractAndProxy);
+
+      await depositProxyContract.withdraw(owner.address, ethers.utils.parseUnits('5', 'ether'));
+
+      expect(await depositProxyContract.provider.getBalance(depositProxyContract.address)
+        ).to.equal(ethers.utils.parseUnits('315.01', 'ether'));
+    });
+
+    it("Should fail to withdraw with other account", async function () {
+      const { depositProxyContract, otherAccount } = await loadFixture(deployDepositContractAndProxy);
+
+      expect(depositProxyContract.connect(otherAccount).withdraw(
+        otherAccount.address, ethers.utils.parseUnits('5', 'ether')
+        )).to.be.revertedWith('Ownable: caller is not the owner');
+
+      expect(await depositProxyContract.provider.getBalance(depositProxyContract.address)).to.equal(ethers.utils.parseUnits('320.01', 'ether'));
+    });
+
     it("Should have a balance of 2 for otherAccount on unfunded deposit contract", async function () {
       const { unfundedDepositProxyContract, otherAccount } = await loadFixture(deployDepositContractAndProxy);
 

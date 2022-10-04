@@ -236,7 +236,7 @@ contract DepositProxyContract is IDepositContract, ERC1155, Ownable, ERC1155Supp
 
         address payable callTarget = payable(address(depositContract()));
         
-        (bool success, ) = callTarget.call{value: 32 ether, gas: 53490}(
+        (bool success, ) = callTarget.call{value: 32 ether, gas: 90000}(
             abi.encodeWithSignature("deposit(bytes,bytes,bytes,bytes32)",
             pubkey, withdrawal_credentials, signature, deposit_data_root));
         

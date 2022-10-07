@@ -9,7 +9,7 @@ async function main() {
   const [faucetAccount, otherAccount] = await ethers.getSigners();
   const goerliProxyDepositContract = PROXY_CONTRACT as string;
   const otherAddress = otherAccount.address;
-  const tokenAmount = 4;
+  const tokenAmount = 2;
 
   console.log(`Sending tokens from ${faucetAccount.address} using proxy on ${goerliProxyDepositContract}`);
 

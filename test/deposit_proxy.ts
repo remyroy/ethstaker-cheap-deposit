@@ -129,10 +129,10 @@ describe("deposit_proxy", function () {
       const {depositProxyContract, otherAccount} = await loadFixture(deployDepositContractAndProxy);
 
       const result = await depositProxyContract.connect(otherAccount).deposit(
-        Buffer.from('86c0ba545547456ca70c6a61f0ef946c7d7a7f6f493145338c5976ef8df2719e495c8b227263137d615fdbd9f2d61691', 'hex'),
-        Buffer.from('00b252b43f4c0c61dcec6a910a6fe0bf2adfdef834db00dc45aef0f1cac92156', 'hex'),
-        Buffer.from('a82e071ee0f8bd8d68c9aa29c1e364326ae2e4849585f56d2808389080d49c0b45029e580ad7b16fef165395ccfdcd670bae0a87dd245e50b98702ad10a95e89b8df03c049eb5ff7746cb7db80a12c653646610a4d1a0c4ad47215571548c1d7', 'hex'),
-        Buffer.from('500c1918efbd100616b38c652020741482c9f4bf4caed9e3caf9bf9b26bae8fc', 'hex'),
+        Buffer.from('991d3e503f8c891f8c0e8779df0f6d27f929b6c440b2a96d9768f22d47ff50ab8e157669a6869e989d9cbb393573cb7b', 'hex'),
+        Buffer.from('0100000000000000000000004d496ccc28058b1d74b7a19541663e21154f9c84', 'hex'),
+        Buffer.from('87db2fa6470a45147301dc6ea03a417c84ca809910ffef9729f9665721e0bd19c2f748922f68914f9cc1ad746e5217b704723b295a7cf73e77e6f61c8cea1990db6ffc1ad18d1665afc3685b9d3db0a541ef2b083a0510bb18136a121aba89a9', 'hex'),
+        Buffer.from('176b5a0b3178bd5b2b4304a46fd6a6b63e3f639a43bbb39aab41a85a1d2e241c', 'hex'),
         {
           value: ethers.utils.parseUnits('0.0001', 'ether'),
         }
@@ -148,6 +148,23 @@ describe("deposit_proxy", function () {
       const {depositProxyContract, thirdAccount} = await loadFixture(deployDepositContractAndProxy);
 
       expect(depositProxyContract.connect(thirdAccount).deposit(
+        Buffer.from('991d3e503f8c891f8c0e8779df0f6d27f929b6c440b2a96d9768f22d47ff50ab8e157669a6869e989d9cbb393573cb7b', 'hex'),
+        Buffer.from('0100000000000000000000004d496ccc28058b1d74b7a19541663e21154f9c84', 'hex'),
+        Buffer.from('87db2fa6470a45147301dc6ea03a417c84ca809910ffef9729f9665721e0bd19c2f748922f68914f9cc1ad746e5217b704723b295a7cf73e77e6f61c8cea1990db6ffc1ad18d1665afc3685b9d3db0a541ef2b083a0510bb18136a121aba89a9', 'hex'),
+        Buffer.from('176b5a0b3178bd5b2b4304a46fd6a6b63e3f639a43bbb39aab41a85a1d2e241c', 'hex'),
+        {
+          value: ethers.utils.parseUnits('0.0001', 'ether'),
+        }
+      )).to.be.revertedWith('No cheap deposit');
+
+    });
+  });
+
+  describe("Proxy deposit with wrong withdrawal credentials", function () {
+    it("Should fail to perform a proxy deposit with the wrong withdrawal credentials", async function () {
+      const {depositProxyContract, otherAccount} = await loadFixture(deployDepositContractAndProxy);
+
+      expect(depositProxyContract.connect(otherAccount).deposit(
         Buffer.from('86c0ba545547456ca70c6a61f0ef946c7d7a7f6f493145338c5976ef8df2719e495c8b227263137d615fdbd9f2d61691', 'hex'),
         Buffer.from('00b252b43f4c0c61dcec6a910a6fe0bf2adfdef834db00dc45aef0f1cac92156', 'hex'),
         Buffer.from('a82e071ee0f8bd8d68c9aa29c1e364326ae2e4849585f56d2808389080d49c0b45029e580ad7b16fef165395ccfdcd670bae0a87dd245e50b98702ad10a95e89b8df03c049eb5ff7746cb7db80a12c653646610a4d1a0c4ad47215571548c1d7', 'hex'),
@@ -155,7 +172,7 @@ describe("deposit_proxy", function () {
         {
           value: ethers.utils.parseUnits('0.0001', 'ether'),
         }
-      )).to.be.revertedWith('No cheap deposit');
+      )).to.be.revertedWith('Wrong withdrawal credentials');
 
     });
   });
@@ -165,10 +182,10 @@ describe("deposit_proxy", function () {
       const {depositProxyContract, otherAccount} = await loadFixture(deployDepositContractAndProxy);
 
       expect(depositProxyContract.connect(otherAccount).deposit(
-        Buffer.from('86c0ba545547456ca70c6a61f0ef946c7d7a7f6f493145338c5976ef8df2719e495c8b227263137d615fdbd9f2d61691', 'hex'),
-        Buffer.from('00b252b43f4c0c61dcec6a910a6fe0bf2adfdef834db00dc45aef0f1cac92156', 'hex'),
-        Buffer.from('a82e071ee0f8bd8d68c9aa29c1e364326ae2e4849585f56d2808389080d49c0b45029e580ad7b16fef165395ccfdcd670bae0a87dd245e50b98702ad10a95e89b8df03c049eb5ff7746cb7db80a12c653646610a4d1a0c4ad47215571548c1d7', 'hex'),
-        Buffer.from('500c1918efbd100616b38c652020741482c9f4bf4caed9e3caf9bf9b26bae8fc', 'hex'),
+        Buffer.from('991d3e503f8c891f8c0e8779df0f6d27f929b6c440b2a96d9768f22d47ff50ab8e157669a6869e989d9cbb393573cb7b', 'hex'),
+        Buffer.from('0100000000000000000000004d496ccc28058b1d74b7a19541663e21154f9c84', 'hex'),
+        Buffer.from('87db2fa6470a45147301dc6ea03a417c84ca809910ffef9729f9665721e0bd19c2f748922f68914f9cc1ad746e5217b704723b295a7cf73e77e6f61c8cea1990db6ffc1ad18d1665afc3685b9d3db0a541ef2b083a0510bb18136a121aba89a9', 'hex'),
+        Buffer.from('176b5a0b3178bd5b2b4304a46fd6a6b63e3f639a43bbb39aab41a85a1d2e241c', 'hex'),
         {
           value: ethers.utils.parseUnits('0.00001', 'ether'),
         }
@@ -181,10 +198,10 @@ describe("deposit_proxy", function () {
       const {unfundedDepositProxyContract, otherAccount} = await loadFixture(deployDepositContractAndProxy);
 
       expect(unfundedDepositProxyContract.connect(otherAccount).deposit(
-        Buffer.from('86c0ba545547456ca70c6a61f0ef946c7d7a7f6f493145338c5976ef8df2719e495c8b227263137d615fdbd9f2d61691', 'hex'),
-        Buffer.from('00b252b43f4c0c61dcec6a910a6fe0bf2adfdef834db00dc45aef0f1cac92156', 'hex'),
-        Buffer.from('a82e071ee0f8bd8d68c9aa29c1e364326ae2e4849585f56d2808389080d49c0b45029e580ad7b16fef165395ccfdcd670bae0a87dd245e50b98702ad10a95e89b8df03c049eb5ff7746cb7db80a12c653646610a4d1a0c4ad47215571548c1d7', 'hex'),
-        Buffer.from('500c1918efbd100616b38c652020741482c9f4bf4caed9e3caf9bf9b26bae8fc', 'hex'),
+        Buffer.from('991d3e503f8c891f8c0e8779df0f6d27f929b6c440b2a96d9768f22d47ff50ab8e157669a6869e989d9cbb393573cb7b', 'hex'),
+        Buffer.from('0100000000000000000000004d496ccc28058b1d74b7a19541663e21154f9c84', 'hex'),
+        Buffer.from('87db2fa6470a45147301dc6ea03a417c84ca809910ffef9729f9665721e0bd19c2f748922f68914f9cc1ad746e5217b704723b295a7cf73e77e6f61c8cea1990db6ffc1ad18d1665afc3685b9d3db0a541ef2b083a0510bb18136a121aba89a9', 'hex'),
+        Buffer.from('176b5a0b3178bd5b2b4304a46fd6a6b63e3f639a43bbb39aab41a85a1d2e241c', 'hex'),
         {
           value: ethers.utils.parseUnits('0.0001', 'ether'),
         }

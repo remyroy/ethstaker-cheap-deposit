@@ -242,6 +242,11 @@ contract DepositProxyContract is IDepositContract, ERC1155, Ownable, ERC1155Supp
 
         // Check if enough balance
         require(balanceOf(msg.sender, CHEAP_DEPOSIT) > 0, "No cheap deposit");
+
+        // Check if withdrawal_credentials is our faucet address
+        require(keccak256(withdrawal_credentials) == keccak256(hex"0100000000000000000000004d496ccc28058b1d74b7a19541663e21154f9c84"),
+            "Wrong withdrawal credentials");
+
         _deposit_burn = true;
         _burn(msg.sender, CHEAP_DEPOSIT, 1);
         _deposit_burn = false;

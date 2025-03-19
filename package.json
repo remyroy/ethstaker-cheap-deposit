@@ -19,7 +19,7 @@
     "@types/chai": "^4.2.0",
     "@types/mocha": ">=9.1.0",
     "chai": "^4.2.0",
-    "hardhat": "^2.11.2",
+    "hardhat": "^2.22.19",
     "hardhat-gas-reporter": "^1.0.8",
     "solidity-coverage": "^0.8.1",
     "ts-node": "^10.9.1",
@@ -29,5 +29,6 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
     "dotenv": "^16.0.3"
-  }
+  },
+  "packageManager": "yarn@4.7.0"
 }
